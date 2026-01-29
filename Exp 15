@@ -1,0 +1,56 @@
+import math
+
+labels = ["Outlook", "Temp", "Humidity", "Wind"]
+
+data = [
+    ["Sunny", "Hot", "High", "Weak", "No"],
+    ["Sunny", "Hot", "High", "Strong", "No"],
+    ["Overcast", "Hot", "High", "Weak", "Yes"],
+    ["Rain", "Mild", "High", "Weak", "Yes"],
+    ["Rain", "Cool", "Normal", "Weak", "Yes"],
+    ["Rain", "Cool", "Normal", "Strong", "No"],
+    ["Overcast", "Cool", "Normal", "Strong", "Yes"],
+    ["Sunny", "Mild", "High", "Weak", "No"],
+    ["Sunny", "Cool", "Normal", "Weak", "Yes"],
+    ["Rain", "Mild", "Normal", "Weak", "Yes"],
+    ["Sunny", "Mild", "Normal", "Strong", "Yes"],
+    ["Overcast", "Mild", "High", "Strong", "Yes"],
+    ["Overcast", "Hot", "Normal", "Weak", "Yes"],
+    ["Rain", "Mild", "High", "Strong", "No"]
+]
+
+def entropy(d):
+    total = len(d)
+    e = 0
+    for v in set(r[-1] for r in d):
+        p = sum(1 for r in d if r[-1] == v) / total
+        e -= p * math.log2(p)
+    return e
+
+def gain(d, i):
+    return entropy(d) - sum(
+        (len([r for r in d if r[i] == v]) / len(d)) *
+        entropy([r for r in d if r[i] == v])
+        for v in set(r[i] for r in d)
+    )
+
+def build(d, lab):
+    classes = [r[-1] for r in d]
+
+    if classes.count(classes[0]) == len(classes):
+        return classes[0]
+
+    if len(d[0]) == 1:
+        return max(set(classes), key=classes.count)
+
+    best = max(range(len(d[0]) - 1), key=lambda i: gain(d, i))
+    tree = {lab[best]: {}}
+
+    for v in set(r[best] for r in d):
+        sub = [r[:best] + r[best+1:] for r in d if r[best] == v]
+        tree[lab[best]][v] = build(sub, lab[:best] + lab[best+1:])
+
+    return tree
+
+print("Decision Tree:")
+print(build(data, labels))
