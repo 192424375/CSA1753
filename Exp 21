@@ -1,0 +1,14 @@
+% Base case: move 1 disk from A to B
+hanoi(1, A, B, _) :-
+    write('Move disk from '),
+    write(A),
+    write(' to '),
+    write(B), nl.
+
+% Recursive case
+hanoi(N, A, B, C) :-
+    N > 1,
+    N1 is N - 1,
+    hanoi(N1, A, C, B),
+    hanoi(1, A, B, _),
+    hanoi(N1, C, B, A).
