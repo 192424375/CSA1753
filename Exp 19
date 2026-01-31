@@ -1,0 +1,3 @@
+student_teacher_subject(ravi, math, m101).
+student_teacher_subject(sita, physics, p102).
+student_teacher_subject(arun, chemistry, c103).
