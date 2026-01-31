@@ -1,0 +1,8 @@
+planet(mercury).
+planet(venus).
+planet(earth).
+planet(mars).
+planet(saturn).
+planet(jupiter).
+planet(uranus).
+planet(neptune).
