@@ -1,0 +1,21 @@
+% Initial facts
+at(monkey, door).
+at(box, window).
+at(banana, middle).
+on(monkey, floor).
+
+% Rules
+move(monkey, door, window).
+move(monkey, window, middle).
+
+push(box, window, middle).
+
+climb(monkey, box).
+
+get_banana :-
+    at(monkey, door),
+    move(monkey, door, window),
+    push(box, window, middle),
+    move(monkey, window, middle),
+    climb(monkey, box),
+    write('Monkey gets the banana').
